@@ -1,0 +1,14 @@
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\xunit.runner.reporters.netcoreapp10.dll
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\xunit.runner.utility.netcoreapp10.dll
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Testing.deps.json
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Testing.runtimeconfig.json
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Testing.runtimeconfig.dev.json
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Testing.dll
+C:\Revature\Project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Testing.pdb
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.csprojAssemblyReference.cache
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.csproj.CoreCompileInputs.cache
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.AssemblyInfoInputs.cache
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.AssemblyInfo.cs
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.dll
+C:\Revature\Project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.pdb

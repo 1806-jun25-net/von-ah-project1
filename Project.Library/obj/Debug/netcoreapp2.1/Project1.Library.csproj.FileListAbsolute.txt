@@ -1,0 +1,9 @@
+C:\Revature\Project1\Project.Library\bin\Debug\netcoreapp2.1\Project1.Library.deps.json
+C:\Revature\Project1\Project.Library\bin\Debug\netcoreapp2.1\Project1.Library.dll
+C:\Revature\Project1\Project.Library\bin\Debug\netcoreapp2.1\Project1.Library.pdb
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.csprojAssemblyReference.cache
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.csproj.CoreCompileInputs.cache
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.AssemblyInfoInputs.cache
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.AssemblyInfo.cs
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.dll
+C:\Revature\Project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.pdb
