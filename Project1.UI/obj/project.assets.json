@@ -5746,11 +5746,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Revature\\Project1\\Project1.UI\\Project1.UI.csproj",
+      "projectUniqueName": "C:\\Revature\\von-ah-project1\\Project1.UI\\Project1.UI.csproj",
       "projectName": "Project1.UI",
-      "projectPath": "C:\\Revature\\Project1\\Project1.UI\\Project1.UI.csproj",
+      "projectPath": "C:\\Revature\\von-ah-project1\\Project1.UI\\Project1.UI.csproj",
       "packagesPath": "C:\\Users\\diane\\.nuget\\packages\\",
-      "outputPath": "C:\\Revature\\Project1\\Project1.UI\\obj\\",
+      "outputPath": "C:\\Revature\\von-ah-project1\\Project1.UI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5769,11 +5769,11 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Revature\\Project1\\Project.Library\\Project1.Library.csproj": {
-              "projectPath": "C:\\Revature\\Project1\\Project.Library\\Project1.Library.csproj"
+            "C:\\Revature\\von-ah-project1\\Project.Library\\Project1.Library.csproj": {
+              "projectPath": "C:\\Revature\\von-ah-project1\\Project.Library\\Project1.Library.csproj"
             },
-            "C:\\Revature\\Project1\\Project1.Testing\\Project1.Testing.csproj": {
-              "projectPath": "C:\\Revature\\Project1\\Project1.Testing\\Project1.Testing.csproj"
+            "C:\\Revature\\von-ah-project1\\Project1.Testing\\Project1.Testing.csproj": {
+              "projectPath": "C:\\Revature\\von-ah-project1\\Project1.Testing\\Project1.Testing.csproj"
             }
           }
         }

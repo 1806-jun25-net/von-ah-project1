@@ -5714,11 +5714,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Revature\\Project1\\Project1.Testing\\Project1.Testing.csproj",
+      "projectUniqueName": "C:\\Revature\\von-ah-project1\\Project1.Testing\\Project1.Testing.csproj",
       "projectName": "Project1.Testing",
-      "projectPath": "C:\\Revature\\Project1\\Project1.Testing\\Project1.Testing.csproj",
+      "projectPath": "C:\\Revature\\von-ah-project1\\Project1.Testing\\Project1.Testing.csproj",
       "packagesPath": "C:\\Users\\diane\\.nuget\\packages\\",
-      "outputPath": "C:\\Revature\\Project1\\Project1.Testing\\obj\\",
+      "outputPath": "C:\\Revature\\von-ah-project1\\Project1.Testing\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

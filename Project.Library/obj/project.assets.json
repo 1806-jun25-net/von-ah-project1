@@ -687,11 +687,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Revature\\Project1\\Project.Library\\Project1.Library.csproj",
+      "projectUniqueName": "C:\\Revature\\von-ah-project1\\Project.Library\\Project1.Library.csproj",
       "projectName": "Project1.Library",
-      "projectPath": "C:\\Revature\\Project1\\Project.Library\\Project1.Library.csproj",
+      "projectPath": "C:\\Revature\\von-ah-project1\\Project.Library\\Project1.Library.csproj",
       "packagesPath": "C:\\Users\\diane\\.nuget\\packages\\",
-      "outputPath": "C:\\Revature\\Project1\\Project.Library\\obj\\",
+      "outputPath": "C:\\Revature\\von-ah-project1\\Project.Library\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

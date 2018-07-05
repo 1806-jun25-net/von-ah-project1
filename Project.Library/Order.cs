@@ -24,7 +24,19 @@ namespace Project1.Library
             }
             else { return false; }
         }
-        
+        public User ReturnUser()
+        {
+            return this.Purchaser;
+        }
+
+        public void SetOrder(Location location, User Purchaser, List<Pizza> OrderPizzas, DateTime OrderTime, decimal OrderTotalValue)
+        {
+            this.OrderLocation = location;
+            this.Purchaser = Purchaser;
+            this.OrderPizzas = OrderPizzas;
+            this.OrderTime = OrderTime;
+            this.OrderTotalValue = OrderTotalValue;
+        }
     }
   /*  public int checkNumOfOrderedPizzasIsInt(string pizzas)
     {

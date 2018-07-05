@@ -13,8 +13,8 @@ namespace Project1.UI
             orderHistory = Serialization.DeserializeFromFile(@"C:\Revature\data.xml");
             RunConsole(orderHistory);
             //          Console.WriteLine("breakpoint here");
-            //         FillList(list);
-            //       Serialization.SerializeToFile(@"C:\Revature\data.xml", list);
+           //          FillList(orderHistory);
+           //          Serialization.SerializeToFile(@"C:\Revature\data.xml", orderHistory);
         }
         static void RunConsole(List<Order> ListOfOrders)
         {
@@ -22,7 +22,7 @@ namespace Project1.UI
             {
                 Console.WriteLine("Welcome to my pizza store!");
                 Console.WriteLine("Please enter your First Name:");
-
+                var currentUser = new User();
                 string fName = Console.ReadLine();
                 Console.WriteLine("Please enter your Last Name:");
                 string lName = Console.ReadLine();
@@ -31,18 +31,23 @@ namespace Project1.UI
                 foreach (var order in ListOfOrders) //iterates thru all orders
                 {
                   check = order.checkUserExists(fName, lName);
-                  if (check) { break; } //breaks loop at first instance of user
+                  if (check) //bad code change
+                    {
+                        currentUser = order.ReturnUser();
+                        break;
+                    } //breaks loop at first instance of user
                 }
                 //does user exist 
                 if (check)
                 {
                     Console.WriteLine("Welcome back {0} {1}", fName, lName);
+                    //find user in order history?
                 }
                 else
                 {
                     Console.WriteLine("Welcome new user, Please set default location");
                     string newUserLocation = Console.ReadLine(); //this allows user to input any location. check this
-                    var newUser = new User { FirstName = fName, LastName = lName, DefaultAddress = newUserLocation };
+                    currentUser = new User { FirstName = fName, LastName = lName, DefaultAddress = newUserLocation };
                     Console.WriteLine("");
                 }
                 // if not set  default location
@@ -69,18 +74,76 @@ namespace Project1.UI
                     //read integer to create pizza List size
                     //check if number of pizzas is more than 12
                     string numOfPizzas = Console.ReadLine();
+                    int numOfPizzasInt = 0;
 
                     //convert to method
-                    try
+                    while (true)
                     {
-                        int numOfPizzasInt = Convert.ToInt32(numOfPizzas);
+                        try
+                        {
+                            numOfPizzasInt = Convert.ToInt32(numOfPizzas);
+                            if (numOfPizzasInt > 12 || numOfPizzasInt < 1)
+                            {
+                                Console.WriteLine("Please input an interger 1-12");
+                                numOfPizzas = Console.ReadLine();
+                            }
+                            else { break; }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Please input an interger 1-12");
+                            numOfPizzas = Console.ReadLine();
+                        }
                     }
-                    catch (Exception ex)
+                    //Order logic for a number of pizzas
+                    Order currentOrder = new Order(); //creates new order
+                    var orderPizzaList = new List<Pizza>(); //creates new list of pizzas
+                    var currentLocation = new Location();
+
+                    //change this implementation 
+
+                    currentLocation.Address = currentUser.DefaultAddress;
+                    decimal runningTotalPrice = 0.00m;
+                    for (int i = 0; i < numOfPizzasInt; i++)
                     {
-                        Console.WriteLine("Please input an interger 1-12");
+                        Pizza currentPizza = new Pizza();
+                        Console.WriteLine("Pizza #{0}:", i+1);
+                        //sets values for pizza object
+                        currentPizza.Pepperoni = ToppingUserChoice("Pepperoni");
+                        currentPizza.ExtraCheese = ToppingUserChoice("Extra Cheese");
+                        currentPizza.Price = Pizza.calculatePrice(currentPizza.Pepperoni, currentPizza.ExtraCheese);
+                        runningTotalPrice += currentPizza.Price; //updates running order total
+                        orderPizzaList.Add(currentPizza); //updates pizza list
                     }
+                    var currentTime = DateTime.Now;
+                    currentOrder.SetOrder(currentLocation, currentUser, orderPizzaList, currentTime, runningTotalPrice); //sets order object
+                    ListOfOrders.Add(currentOrder); //updates order history
+                    Serialization.SerializeToFile(@"C:\Revature\data.xml", ListOfOrders); //updates xml document
+
                 }
 
+            }
+        }
+
+        public static bool ToppingUserChoice(string topping)
+        {
+
+            Console.WriteLine("Would you like to add {0} to your pizza? y/n", topping);
+            while (true)
+            {
+                string Answer = Console.ReadLine();
+                if (Answer == "y")
+                {
+                    return true;
+                }
+                else if (Answer == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("{0} is not a valid answer, please type y/n.", Answer);
+                }
             }
         }
 
@@ -88,10 +151,11 @@ namespace Project1.UI
         {
             list.Add(new Order
             {
-                OrderLocation = new Location {
+                OrderLocation = new Location
+                {
                     Address = "123 Grove St."
-                  /*  Inventory = new Dictionary<string,int> {{ "Pepperoni", 5},
-                    { "Cheese", 10} }*/ //add inventory back in after xml testing
+                    /* Inventory = new List<KeyValuePair<string, int>>() { new KeyValuePair<string,int> ("Pepperoni", 5),
+                     new KeyValuePair<string,int>  ("Cheese", 10) }*/ //add inventory back in after xml testing
                 },
                 Purchaser = new User
                 {
