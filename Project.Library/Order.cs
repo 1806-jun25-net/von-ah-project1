@@ -24,6 +24,15 @@ namespace Project1.Library
             }
             else { return false; }
         }
+
+        public bool checkLocation(string address)
+        {
+            if (this.OrderLocation.Address.Equals(address))
+            {
+                return true;
+            }
+            else { return false; }
+        }
         public User ReturnUser()
         {
             return this.Purchaser;
@@ -37,6 +46,11 @@ namespace Project1.Library
             this.OrderTime = OrderTime;
             this.OrderTotalValue = OrderTotalValue;
         }
+
+     /*   public bool checkUserOrdered(User userName)
+        {
+
+        }*/
     }
   /*  public int checkNumOfOrderedPizzasIsInt(string pizzas)
     {
