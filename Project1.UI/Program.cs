@@ -91,6 +91,7 @@ namespace Project1.UI
                 Console.WriteLine("1. Order a pizza");
                 Console.WriteLine("2. Display order history of a user");
                 Console.WriteLine("3. Display order history of a location");
+                Console.WriteLine("4. Search users by name");
                 Console.WriteLine("");
                 var input = Console.ReadLine();
                 //sanitize this input
@@ -150,8 +151,15 @@ namespace Project1.UI
                     var currentTime = DateTime.Now;
                     currentOrder.SetOrder(currentLocation, currentUser, orderPizzaList, currentTime, runningTotalPrice); //sets order object
                     ListOfOrders.Add(currentOrder); //updates order history
+
+                    var currentOrderList = new List<Order>
+                    {
+                        currentOrder
+                    }; //create list of orders to print
+                    Console.WriteLine("");
+                    Console.WriteLine("Details about your order.");
+                    PrintAListOfOrders(currentOrderList);
                     Serialization.SerializeToFile(@"C:\Revature\data.xml", ListOfOrders); //updates xml document
-                    //right now after an order, it prompts for user.
                 }
                 if (input == "2") //order history by user
                 {
@@ -305,7 +313,43 @@ namespace Project1.UI
                 
                     
                 }
+                if (input == "4")
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Please enter the user's first name:");
+                    var searchName = Console.ReadLine();
+                    var searchUser = new List<User>();
+                    foreach(var order in ListOfOrders)
+                    {
+                        if ((order.Purchaser.FirstName.Equals(searchName)) && (!searchUser.Exists(x => x.FirstName.Equals(order.Purchaser.FirstName) 
+                        && (x.LastName.Equals(order.Purchaser.LastName))))) //search to see if the order history has a matched user and that user doesnt exist in the search already
+                        {
+                            var newSearchUser = new User { FirstName = order.Purchaser.FirstName, LastName = order.Purchaser.LastName, DefaultAddress = "" };
+                            searchUser.Add(newSearchUser);
+                        }
+                    }
+                    if (searchUser.Count > 0)
+                    {
+                        PrintAListOfUsers(searchUser);
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("User {0} doesn't exist in our order history", searchName);
+                    }
+                }
 
+            }
+        }
+
+        public static void PrintAListOfUsers(List<User> users)
+        {
+            Console.WriteLine("");
+            int i = 1;
+            foreach(var user in users)
+            {
+                Console.WriteLine("{0}. {1} {2}", i, user.FirstName, user.LastName);
+                i++;     
             }
         }
 
