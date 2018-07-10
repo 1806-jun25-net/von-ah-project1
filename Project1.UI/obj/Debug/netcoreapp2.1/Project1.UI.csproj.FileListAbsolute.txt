@@ -36,3 +36,6 @@ C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\Project1.Testing
 C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\Project1.Library.pdb
 C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\Project1.Testing.pdb
 C:\Revature\von-ah-project1\Project1.UI\obj\Debug\netcoreapp2.1\Project1.UI.csproj.CopyComplete
+C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\appsettings.json
+C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\Project1.Context.dll
+C:\Revature\von-ah-project1\Project1.UI\bin\Debug\netcoreapp2.1\Project1.Context.pdb

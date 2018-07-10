@@ -4,14 +4,15 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Project1.Library
+namespace Project1.Library.Models
 {
     public class Order
     {
         [XmlElement]    
+        public int OrderID { get; set; }
         public Location OrderLocation { get; set; }
         public User Purchaser { get; set; }
-        public List<Pizza> OrderPizzas = new List<Pizza>();
+        public List<Pizza> OrderPizzas { get; set; } = new List<Pizza>();
         public DateTime OrderTime { get; set; }
         public decimal OrderTotalValue { get; set; }
 
@@ -24,7 +25,7 @@ namespace Project1.Library
             }
             else { return false; }
         }
-
+        
         public bool checkLocation(string address)
         {
             if (this.OrderLocation.Address.Equals(address))
@@ -47,6 +48,7 @@ namespace Project1.Library
             this.OrderTotalValue = OrderTotalValue;
         }
 
+       
      /*   public bool checkUserOrdered(User userName)
         {
 

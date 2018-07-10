@@ -1,7 +1,13 @@
-﻿using Project1.Library;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Project1.Library;
+using Project1.Library.Models;
+using Project1.Library.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using P1M = Project1.Context.Models;
 
 namespace Project1.UI
 {
@@ -9,16 +15,37 @@ namespace Project1.UI
     {
         static void Main(string[] args)
         {
-            
+            var configBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var configuration = configBuilder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<P1M.Project1Context>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var options = optionsBuilder.Options;
+
+            var dbContext = new P1M.Project1Context(options);
+            var repository = new Project1Repository(dbContext);
+
             var orderHistory = new List<Order>();
-            orderHistory = Serialization.DeserializeFromFile(@"C:\Revature\data.xml");
-            RunConsole(orderHistory);
+            //   orderHistory = Serialization.DeserializeFromFile(@"C:\Revature\data.xml");
+            orderHistory = repository.GetOrders();
+            RunConsole(orderHistory, dbContext, repository);
+
             //          Console.WriteLine("breakpoint here");
            //          FillList(orderHistory);
            //          Serialization.SerializeToFile(@"C:\Revature\data.xml", orderHistory);
+
         }
-        static void RunConsole(List<Order> ListOfOrders)
+
+
+        static void RunConsole(List<Order> ListOfOrders, P1M.Project1Context dbContext, Project1Repository repository)
         {
+
+            
+
+          //  repository.Test();
+
+
             Console.WriteLine("Welcome to my pizza store!");
             Console.WriteLine("Please enter your First Name:");
             var currentUser = new User();
@@ -54,27 +81,34 @@ namespace Project1.UI
                     var input = Console.ReadLine();
                     string newUserLocation = "";
                     if (input == "1")
-                    {
+                    { //make into a function
                         newUserLocation = "123 Grove St.";
                         currentUser = new User { FirstName = fName, LastName = lName, DefaultAddress = newUserLocation };
+                        repository.AddUser(currentUser);
+                        repository.Save();
                         break;
                     }
                     else if (input == "2")
                     {
                         newUserLocation = "21 Jump St.";
                         currentUser = new User { FirstName = fName, LastName = lName, DefaultAddress = newUserLocation };
+                        repository.AddUser(currentUser);
+                        repository.Save();
                         break;
                     }
                     else if (input == "3")
                     {
                         newUserLocation = "221B Baker St.";
                         currentUser = new User { FirstName = fName, LastName = lName, DefaultAddress = newUserLocation };
+                        repository.AddUser(currentUser);
+                        repository.Save();
                         break;
                     }
                     else
                     {
                         Console.WriteLine("Please choose an option 1-3");
                     }
+                    
                 }
             }
             // if not set  default location
@@ -97,10 +131,11 @@ namespace Project1.UI
                 //sanitize this input
                 if (input == "0")
                 {
+                    dbContext.Dispose();
                     Environment.Exit(0);
                 }
 
-                if (input == "1")
+                else if (input == "1")
                 {
                     //place order (still needs implementation for orders > 500, orders that drain inventory, orders made by same user within 2 hrs)
                     Console.WriteLine("How many pizzas would you like to order?");
@@ -108,6 +143,8 @@ namespace Project1.UI
                     //check if number of pizzas is more than 12
                     string numOfPizzas = Console.ReadLine();
                     int numOfPizzasInt = 0;
+                    var ListOfLocations = new List<Location>();
+
 
                     //convert to method
                     while (true)
@@ -134,7 +171,9 @@ namespace Project1.UI
                     var currentLocation = new Location
                     {
                         //change this implementation 
+                        LocationID = Location.FindLocationId(currentUser.DefaultAddress),
                         Address = currentUser.DefaultAddress
+
                     };
                     decimal runningTotalPrice = 0.00m;
                     for (int i = 0; i < numOfPizzasInt; i++)
@@ -144,24 +183,40 @@ namespace Project1.UI
                         //sets values for pizza object
                         currentPizza.Pepperoni = ToppingUserChoice("Pepperoni");
                         currentPizza.ExtraCheese = ToppingUserChoice("Extra Cheese");
-                        currentPizza.Price = Pizza.calculatePrice(currentPizza.Pepperoni, currentPizza.ExtraCheese);
+                        currentPizza.PizzaID = Pizza.FindPizzaId(currentPizza.Pepperoni, currentPizza.ExtraCheese);
+                        currentPizza.Price = Pizza.calculatePrice(currentPizza.Pepperoni, currentPizza.ExtraCheese); //fix this so price is recieved from database
                         runningTotalPrice += currentPizza.Price; //updates running order total
                         orderPizzaList.Add(currentPizza); //updates pizza list
                     }
                     var currentTime = DateTime.Now;
+
+                    //find last orderID
+                    int lastOrderId = ListOfOrders.Last().OrderID; //the ID of the last order made
+                    currentUser.UserID = repository.FindUserId(currentUser.FirstName, currentUser.LastName); //adds userID to current user object so order can map
+
                     currentOrder.SetOrder(currentLocation, currentUser, orderPizzaList, currentTime, runningTotalPrice); //sets order object
                     ListOfOrders.Add(currentOrder); //updates order history
+
 
                     var currentOrderList = new List<Order>
                     {
                         currentOrder
-                    }; //create list of orders to print
+                    }; //create list of orders to print. no method to print 1 order? fix?
                     Console.WriteLine("");
                     Console.WriteLine("Details about your order.");
                     PrintAListOfOrders(currentOrderList);
-                    Serialization.SerializeToFile(@"C:\Revature\data.xml", ListOfOrders); //updates xml document
+                    repository.AddOrder(currentOrder);
+                    repository.Save();
+                    foreach (var pizza in orderPizzaList)
+                    {
+                        repository.AddOrderPizzas(lastOrderId+1, pizza.PizzaID); //increases last order ID by 1 and stores values to order pizza table
+                    }
+                    repository.Save();
+                    
+                   // Serialization.SerializeToFile(@"C:\Revature\data.xml", ListOfOrders); //updates xml document
+
                 }
-                if (input == "2") //order history by user
+                else if (input == "2") //order history by user
                 {
 
                     Console.WriteLine("Please enter the first name of the user:");
@@ -226,7 +281,7 @@ namespace Project1.UI
 
 
                 }
-                if (input == "3") //order history by location
+                else if (input == "3") //order history by location
                 {
                     string locationAddress = "";
                     while (true)
@@ -313,7 +368,7 @@ namespace Project1.UI
                 
                     
                 }
-                if (input == "4")
+                else if (input == "4")
                 {
                     Console.WriteLine("");
                     Console.WriteLine("Please enter the user's first name:");
@@ -338,6 +393,12 @@ namespace Project1.UI
                         Console.WriteLine("User {0} doesn't exist in our order history", searchName);
                     }
                 }
+                else
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Please enter an option 0-4"); //update this for new options
+                    Console.WriteLine("");
+                }
 
             }
         }
@@ -360,9 +421,9 @@ namespace Project1.UI
                 Console.WriteLine("User: {0} {1}", order.Purchaser.FirstName, order.Purchaser.LastName);
                 Console.WriteLine("Location: {0}", order.OrderLocation.Address);
                 Console.WriteLine("");
+                int i = 1;
                 foreach (var pizza in order.OrderPizzas)
                 {
-                    int i = 1;
                     Console.WriteLine("Pizza {0} - Price: ${1}", i, pizza.Price);
                     Console.WriteLine("Toppings - Pepperoni: {0}, Extra Cheese: {1}", pizza.Pepperoni.ToString(), pizza.ExtraCheese.ToString());
                     Console.WriteLine("");
