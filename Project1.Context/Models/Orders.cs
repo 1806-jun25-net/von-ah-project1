@@ -19,6 +19,5 @@ namespace Project1.Context.Models
         public Locations Location { get; set; }
         public Users User { get; set; }
         public ICollection<OrderPizza> OrderPizza { get; set; }
-
     }
 }

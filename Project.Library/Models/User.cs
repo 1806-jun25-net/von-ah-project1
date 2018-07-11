@@ -10,6 +10,6 @@ namespace Project1.Library.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DefaultAddress { get; set; }
-
+        public bool ManagerFlag { get; set; }
     }
 }

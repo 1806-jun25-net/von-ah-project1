@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -48,12 +49,50 @@ namespace Project1.Library.Models
             this.OrderTotalValue = OrderTotalValue;
         }
 
-       
-     /*   public bool checkUserOrdered(User userName)
+        public static List<Order> CreateUserOrderHistory(List<Order> orders, string FirstName, string LastName)
         {
 
-        }*/
+
+            var userHistory = new List<Order>(); // creates new list of orders to represent the user history
+                                                 //userHistory = null;
+            foreach (var order in orders)
+            {
+                var hasUserOrder = order.checkUserExists(FirstName, LastName); //goes through each order looking for user name
+                if (hasUserOrder)
+                {
+                    userHistory.Add(order);
+                }
+            }
+            return userHistory;
+        }
+
+        public static List<Order> CreateLocationOrderHistory(List<Order> orders, string address)
+        {
+            var locationHistory = new List<Order>();
+            foreach (var order in orders) //this was copy/paste from user Display. make into a function? fix
+            {
+                var hasLocationOrder = order.checkLocation(address);
+                if (hasLocationOrder)
+                {
+                    locationHistory.Add(order);
+                }
+            }
+            return locationHistory;
+        }
+
+
+        public static Order FindLastOrderFromUserFromLocation(List<Order> orders, string location)
+        {
+            orders.Sort((x, y) => y.OrderTime.CompareTo(x.OrderTime));
+            return orders.FirstOrDefault(); //look at this when list is empty
+        }
     }
+
+    /*   public bool checkUserOrdered(User userName)
+       {
+
+       }*/
+}
   /*  public int checkNumOfOrderedPizzasIsInt(string pizzas)
     {
         try
@@ -67,4 +106,3 @@ namespace Project1.Library.Models
     }*/
 
 
-}

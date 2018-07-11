@@ -16,7 +16,7 @@ namespace Project1.Library.Repositories
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
-
+        //add user on new user input
         public void AddUser(Models.User user)
         {
             _db.Add(Mapper.Map(user));
@@ -38,19 +38,59 @@ namespace Project1.Library.Repositories
             
         }
 
+        public Models.User GetUserByName(string First, string Last)
+        {
+            var users = _db.Users;
+            foreach (var user in users)
+            {
+                if ((user.FirstName.Equals(First)) && (user.LastName.Equals(Last)))
+                {
+                    return Mapper.Map(user);
+                }
+            }
+            return null;
+        }
+
+        public Models.Location GetLocationByName(string address)
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                if (location.Address.Equals(address))
+                {
+                    return Mapper.Map(location);
+                }
+            }
+            return null;
+        }
+
+        public List<Models.User> SearchUserByFirstName(string First)
+        {
+            var users = _db.Users;
+            var SearchedUsers = new List<Models.User>();
+            foreach (var user in users)
+            {
+                if(user.FirstName.Equals(First))
+                {
+                    SearchedUsers.Add(Mapper.Map(user));
+                }
+            }
+            return SearchedUsers;
+        }
+
         //map libray order to context order. will need to also update order pizza table. needs to return the new order ID
         public void AddOrder(Models.Order order)
         {
             _db.Add(Mapper.Map(order));
            // Console.WriteLine("{0}", order.OrderID);
         }
-
+        //creates entry in order pizza table
         public void AddOrderPizzas(int orderID, int pizzaId)
         {
             Context.Models.OrderPizza SingleOrderPizza = new Context.Models.OrderPizza { OrderId = orderID, PizzaId = pizzaId };
             _db.Add(SingleOrderPizza);
         }
-
+        //finds user id based on first name last name, if not in table (shouldnt happen) returns 0
        public int FindUserId(string First, string Last)
         {
             var users = _db.Users;
@@ -77,8 +117,16 @@ namespace Project1.Library.Repositories
             }
             return pizzaList;
         }
+        //will update location inventory after an order
+        public void UpdateLocationInventory(Models.Location location)
+        {
+            _db.Entry(_db.Locations.Find(location.LocationID)).CurrentValues.SetValues(Mapper.Map(location));
+         /*   _db.Locations.Attach(Mapper.Map(location));
+            _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryCheese).IsModified = true;
+            _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryPepperoni).IsModified = true;*/
+        }
 
-        public void Test()
+       /* public void Test()
         {
             foreach (var orderPizza in _db.OrderPizza)
             {
@@ -86,7 +134,7 @@ namespace Project1.Library.Repositories
                 var pizza = _db.Pizzas.Find(4);
                 Console.WriteLine("{0},{1},{2}", pizza.PizzaId, pizza.Price, pizza.ToppingCheese);
             }
-        }
+        }*/
     }
 }
     

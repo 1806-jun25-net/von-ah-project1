@@ -14,6 +14,7 @@ namespace Project1.Context.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DefaultAddress { get; set; }
+        public bool? ManagerFlag { get; set; }
 
         public ICollection<Orders> Orders { get; set; }
     }

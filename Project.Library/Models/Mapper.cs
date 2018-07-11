@@ -14,7 +14,9 @@ namespace Project1.Library.Models
             UserID = user.UserId,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            DefaultAddress = user.DefaultAddress
+            DefaultAddress = user.DefaultAddress,
+            ManagerFlag = user.ManagerFlag ?? false
+            
         };
         //maps a library User to a dbcontext User
         public static Context.Models.Users Map(User user) => new Context.Models.Users
@@ -36,7 +38,7 @@ namespace Project1.Library.Models
         //maps a library location to a dbcontext location
         public static Context.Models.Locations Map(Location location) => new Context.Models.Locations
         {
-          //  LocationId = location.LocationID,
+            LocationId = location.LocationID,
             Address = location.Address,
             ToppingInventoryPepperoni = location.PepperoniInventory,
             ToppingInventoryCheese = location.CheeseInventory

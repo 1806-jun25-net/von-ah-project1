@@ -45,6 +45,14 @@ ALTER TABLE OrderPizza
 ADD FOREIGN KEY (PizzaID) REFERENCES Pizzas(PizzaID);
 
 
+Alter Table Users
+Add ManagerFlag bit Default 0
+go 
+update Users
+Set ManagerFlag = 0
+
+insert Users
+Values ('Papa', 'John', '123 Grove St.', 1)
 
 SELECT * from Orders
 SELECT * from Users
@@ -55,7 +63,7 @@ SELECT * from Pizzas
 --initalize some values
 
 INSERT Users
-VALUES ('Lance', 'Von Ah', '123 Grove St') 
+VALUES ('Lance', 'Von Ah', '123 Grove St.') 
 
 Insert Users
 Values ('Rolando', 'Toledo', '21 Jump St.')
@@ -79,15 +87,18 @@ Values (1, 1), (1, 4)
 Insert OrderPizza
 Values (2,4)
 
+Update Users
+Set defaultAddress = '123 Grove St.'
+WHERE UserID = 1
 
 DELETE FROM OrderPizza
-Where ID = 4 OR ID = 5
+Where ID = 15
 
 DELETE FROM Orders
-WHERE OrderID = 3
+WHERE OrderID = 10
 
 DELETE FROM Users
-WHERE UserID = 3
+WHERE UserID = 4
 
 DELETE FROM Locations
 WHERE LocationID = 5

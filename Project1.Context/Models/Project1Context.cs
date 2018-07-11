@@ -25,9 +25,9 @@ namespace Project1.Context.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Locations>(entity =>
@@ -53,13 +53,13 @@ namespace Project1.Context.Models
                     .WithMany(p => p.OrderPizza)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderPizz__Order__656C112C");
+                    .HasConstraintName("FK__OrderPizz__Order__0D7A0286");
 
                 entity.HasOne(d => d.Pizza)
                     .WithMany(p => p.OrderPizza)
                     .HasForeignKey(d => d.PizzaId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderPizz__Pizza__66603565");
+                    .HasConstraintName("FK__OrderPizz__Pizza__0E6E26BF");
             });
 
             modelBuilder.Entity<Orders>(entity =>
@@ -80,13 +80,13 @@ namespace Project1.Context.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orders__Location__6383C8BA");
+                    .HasConstraintName("FK__Orders__Location__0B91BA14");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orders__UserID__6477ECF3");
+                    .HasConstraintName("FK__Orders__UserID__0C85DE4D");
             });
 
             modelBuilder.Entity<Pizzas>(entity =>
@@ -116,6 +116,8 @@ namespace Project1.Context.Models
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(128);
+
+                entity.Property(e => e.ManagerFlag).HasDefaultValueSql("((0))");
             });
         }
     }
