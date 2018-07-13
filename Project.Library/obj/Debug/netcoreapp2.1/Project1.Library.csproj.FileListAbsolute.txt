@@ -19,3 +19,5 @@ C:\Revature\von-ah-project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Lib
 C:\Revature\von-ah-project1\Project.Library\bin\Debug\netcoreapp2.1\Project1.Context.dll
 C:\Revature\von-ah-project1\Project.Library\bin\Debug\netcoreapp2.1\Project1.Context.pdb
 C:\Revature\von-ah-project1\Project.Library\obj\Debug\netcoreapp2.1\Project1.Library.csproj.CopyComplete
+C:\Revature\von-ah-project1\Project.Library\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Html.Abstractions.dll
+C:\Revature\von-ah-project1\Project.Library\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Html.Abstractions.xml

@@ -88,8 +88,8 @@ Insert OrderPizza
 Values (2,4)
 
 Update Users
-Set defaultAddress = '123 Grove St.'
-WHERE UserID = 1
+Set ManagerFlag = 1
+WHERE UserID = 6
 
 DELETE FROM OrderPizza
 Where ID = 15
@@ -98,7 +98,7 @@ DELETE FROM Orders
 WHERE OrderID = 10
 
 DELETE FROM Users
-WHERE UserID = 4
+WHERE UserID = 11
 
 DELETE FROM Locations
 WHERE LocationID = 5

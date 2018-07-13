@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Project1.Library.Models
 {
     public class Mapper
@@ -18,6 +19,9 @@ namespace Project1.Library.Models
             ManagerFlag = user.ManagerFlag ?? false
             
         };
+
+
+
         //maps a library User to a dbcontext User
         public static Context.Models.Users Map(User user) => new Context.Models.Users
         {
@@ -31,8 +35,8 @@ namespace Project1.Library.Models
         {
             LocationID = location.LocationId,
             Address = location.Address,
-            CheeseInventory = location.ToppingInventoryCheese,
-            PepperoniInventory = location.ToppingInventoryPepperoni
+         // /  CheeseInventory = location.ToppingInventoryCheese,
+          //  PepperoniInventory = location.ToppingInventoryPepperoni
 
         };
         //maps a library location to a dbcontext location
@@ -40,8 +44,8 @@ namespace Project1.Library.Models
         {
             LocationId = location.LocationID,
             Address = location.Address,
-            ToppingInventoryPepperoni = location.PepperoniInventory,
-            ToppingInventoryCheese = location.CheeseInventory
+        //    ToppingInventoryPepperoni = location.PepperoniInventory,
+         //   ToppingInventoryCheese = location.CheeseInventory
         };
         //maps a dbcontext Pizza to a library pizza
         public static Pizza Map(Context.Models.Pizzas pizza) => new Pizza
@@ -65,6 +69,9 @@ namespace Project1.Library.Models
             OrderID = order.OrderId,
             OrderLocation = Map(order.Location),
             Purchaser = Map(order.User),
+            LocationId = order.LocationId,
+            UserId = order.UserId,
+            
           //  OrderPizzas = Map(order.OrderPizza), //how do i populate my order with a list of pizzas? pizza orders are just as effective
            OrderTime = order.OrderTime,
            OrderTotalValue = order.TotalPrice

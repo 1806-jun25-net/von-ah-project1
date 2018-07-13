@@ -16,6 +16,8 @@ namespace Project1.Library.Models
         public List<Pizza> OrderPizzas { get; set; } = new List<Pizza>();
         public DateTime OrderTime { get; set; }
         public decimal OrderTotalValue { get; set; }
+        public int LocationId { get; set; }
+        public int UserId { get; set; }
 
 
         public bool checkUserExists(string fName, string lName) //compares order history user names to user input

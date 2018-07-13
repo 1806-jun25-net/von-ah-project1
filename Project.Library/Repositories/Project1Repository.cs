@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Html;
+using Microsoft.EntityFrameworkCore;
 using Project1.Context;
 using Project1.Context.Models;
 using Project1.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Lib = Project1.Library.Models;
 
 namespace Project1.Library.Repositories
 {
@@ -38,6 +40,49 @@ namespace Project1.Library.Repositories
             
         }
 
+        public List<Models.Order> GetOrdersByUserId(int id)
+        {
+            var OrderList = Mapper.Map(_db.Orders.Include(x => x.Location).Include(y => y.User).AsNoTracking());
+            var user = FindUserNameById(id);
+            List<Lib.Order> UserHistory = Lib.Order.CreateUserOrderHistory(OrderList, user.FirstName, user.LastName);
+            return UserHistory;
+        }
+
+        public List<Models.Order> GetOrdersByLocationId(int id)
+        {
+            var OrderList = Mapper.Map(_db.Orders.Include(x => x.Location).Include(y => y.User).AsNoTracking());
+            var location = FindLocationById(id);
+            List<Lib.Order> LocationHistory = Lib.Order.CreateLocationOrderHistory(OrderList, location.Address);
+            return LocationHistory;
+        }
+
+        public Context.Models.Locations FindLocationById(int id)
+        {
+            var locations = _db.Locations;
+            foreach(var location in locations)
+            {
+                if (location.LocationId.Equals(id))
+                {
+                    return location;
+                }
+                
+            }
+            return null;
+        }
+
+        public Context.Models.Users FindUserNameById(int id)
+        {
+            var users = _db.Users;
+            foreach (var user in users)
+            {
+                if (user.UserId.Equals(id))
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
         public Models.User GetUserByName(string First, string Last)
         {
             var users = _db.Users;
@@ -62,6 +107,19 @@ namespace Project1.Library.Repositories
                 }
             }
             return null;
+        }
+
+        public int GetLocationIdByName(string address)
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                if(location.Address.Equals(address))
+                {
+                    return location.LocationId;
+                }
+            }
+            return 0;
         }
 
         public List<Models.User> SearchUserByFirstName(string First)
@@ -125,16 +183,16 @@ namespace Project1.Library.Repositories
             _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryCheese).IsModified = true;
             _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryPepperoni).IsModified = true;*/
         }
-
-       /* public void Test()
-        {
-            foreach (var orderPizza in _db.OrderPizza)
-            {
-                //     Console.WriteLine("{0} {1}", orderPizza.OrderId, orderPizza.PizzaId);
-                var pizza = _db.Pizzas.Find(4);
-                Console.WriteLine("{0},{1},{2}", pizza.PizzaId, pizza.Price, pizza.ToppingCheese);
-            }
-        }*/
+       
+        /* public void Test()
+         {
+             foreach (var orderPizza in _db.OrderPizza)
+             {
+                 //     Console.WriteLine("{0} {1}", orderPizza.OrderId, orderPizza.PizzaId);
+                 var pizza = _db.Pizzas.Find(4);
+                 Console.WriteLine("{0},{1},{2}", pizza.PizzaId, pizza.Price, pizza.ToppingCheese);
+             }
+         }*/
     }
 }
     
