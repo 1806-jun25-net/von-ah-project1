@@ -9,6 +9,22 @@
 <h2>PlaceOrder</h2>
 
 <h4>OrderWeb</h4>
+@if (Model.OrderId != 0)
+{
+<p>Suggested Order! The last time you were here you ordered:</p>
+    <p>@Model.PizzaCountDetails Pizzas</p>
+    for (int x = 1; x < Model.PizzaCountDetails+1; x++)
+    { 
+        <p>Pizza #@x
+           Toppings - Pepperoni:@Model.PizzaDictionary[x-1][0], Cheese:@Model.PizzaDictionary[x-1][1]
+
+        </p>
+    }
+}
+else
+{
+    <p>You have no never ordered a pizza using our app. You have no suggested order. </p>
+}
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,7 +33,7 @@
             @for (int i = 1; i < Model.PizzaCountInt+1; i++) 
             {
             <div class="form-group">
-                <h3>Pizza #:@i</h3>
+                <h3>Pizza #@i</h3>
                     <label><input id="checked" type="checkbox" name="ToppingListForm" value="true" />
                            <input id="unchecked" type="hidden" value="false" name="ToppingListForm"/>Pepperoni</label>
                     <label><input id="checked" type="checkbox" name="ToppingListForm" value="true" />

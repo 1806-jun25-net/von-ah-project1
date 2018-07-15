@@ -294,6 +294,8 @@ namespace Project1.Library.Repositories
             }
             return pizzaList;
         }
+
+
         //will update location inventory after an order
         public void UpdateLocationInventory(Models.Location location)
         {

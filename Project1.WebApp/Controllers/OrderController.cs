@@ -36,7 +36,7 @@ namespace Project1.WebApp.Controllers
 
             return View(order);
         }
-        public ActionResult PlaceOrder(string numP, string loc)
+        public ActionResult PlaceOrder(string numP, string loc, int lastId)
         {
             TempData["numP"] = numP;
             TempData["loc"] = loc;
@@ -44,6 +44,44 @@ namespace Project1.WebApp.Controllers
             {
                 PizzaCountInt = Convert.ToInt32(numP)
             };
+
+            order.OrderId = lastId;
+            //logic to display suggested order
+            //need parameter last order id
+            //if order history doesnt exist then lastId will be 0
+            //take id and get order
+            if (order.OrderId != 0 )
+            {
+
+                //grab pizza ids from order pizza table
+                List<Library.Models.Pizza> pizzaList = Repo.FindPizzasInOrderPizzaByOrderID(order.OrderId);
+                order.PizzaCountDetails = pizzaList.Count();
+
+                //fill out pizzadictionary
+                List<bool> ToppingList = new List<bool>();
+                ToppingList.Add(false);
+                ToppingList.Add(false);
+                for (int i = 0; i < order.PizzaCountDetails; i++)
+                {
+                    order.PizzaDictionary.Add(i, ToppingList);
+                }
+
+                for (int i = 0; i < order.PizzaCountDetails; i++)
+                {
+                    List<bool> OrderToppingList = new List<bool>();
+                    OrderToppingList.Add(pizzaList[i].Pepperoni);
+                    OrderToppingList.Add(pizzaList[i].ExtraCheese);
+                    order.PizzaDictionary[i] = OrderToppingList;                   
+                }
+
+                return View(order);
+                //develop logic to grab pizza count from order pizza table
+                
+                //create pizza dictionary from count and ids
+                //put logic in html to print pizzas based on dictionary
+                //add this logic to order details and maybe order history by location and user
+            }
+            //fill out details. (details will be overwritten in post action or because they arent part of the form they go away?)
 
 
             return View(order);
@@ -59,6 +97,25 @@ namespace Project1.WebApp.Controllers
             string LastName = Repo.FindLastNameById(WebOrder.UserId);
             WebOrder.Address = Repo.GetLocationNameById(WebOrder.LocationId);
             WebOrder.UserName = FirstName + " " + LastName;
+            List<Library.Models.Pizza> pizzaList = Repo.FindPizzasInOrderPizzaByOrderID(WebOrder.OrderId);
+            WebOrder.PizzaCountDetails = pizzaList.Count();
+
+            //fill out pizzadictionary
+            List<bool> ToppingList = new List<bool>();
+            ToppingList.Add(false);
+            ToppingList.Add(false);
+            for (int i = 0; i < WebOrder.PizzaCountDetails; i++)
+            {
+                WebOrder.PizzaDictionary.Add(i, ToppingList);
+            }
+
+            for (int i = 0; i < WebOrder.PizzaCountDetails; i++)
+            {
+                List<bool> OrderToppingList = new List<bool>();
+                OrderToppingList.Add(pizzaList[i].Pepperoni);
+                OrderToppingList.Add(pizzaList[i].ExtraCheese);
+                WebOrder.PizzaDictionary[i] = OrderToppingList;
+            }
             return View(WebOrder);
         }
 
@@ -97,10 +154,21 @@ namespace Project1.WebApp.Controllers
                     {
                         ModelState.AddModelError("", "Sorry you cannot place an order from the same location within two hours");
                         return View(order);
-                        //pass last order id and print suggested order on place order
+                        
                     }
                 }
-                return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address }); //redirect to next part of the order with the data you have. PizzaCount and location (which can make a location id)
+                //pass last order id and print suggested order on place order
+                //get last order logic
+                if (userHistory.Count > 0) //if user has an order history
+                {
+                    var LastOrder = Library.Models.Order.FindLastOrderFromUserFromLocation(userHistory);
+                    return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address, lastId = LastOrder.OrderID });
+                }
+                else
+                {
+                    return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address, lastId = 0 });
+                }
+                 //redirect to next part of the order with the data you have. PizzaCount and location (which can make a location id)
 
 
             }

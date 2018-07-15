@@ -19,6 +19,7 @@ namespace Project1.WebApp.Models
         public Dictionary<int, List<bool>> PizzaDictionary { get; set; } = new Dictionary<int, List<bool>>();
         public string PizzaCountString { get; set; }
         public int PizzaCountInt { get; set; }
+        public int PizzaCountDetails { get; set; }
         public string Address { get; set; }
         public bool[] CheckBoxValues { get; set; }
         public string UserName { get; set; }

@@ -42,6 +42,15 @@
         </dd>
     </dl>
 </div>
+<p>@Model.PizzaCountDetails Pizzas</p>
+    @for (int x = 1; x < Model.PizzaCountDetails+1; x++)
+    {
+<p>
+    Pizza #@x
+    Toppings - Pepperoni:@Model.PizzaDictionary[x - 1][0], Cheese:@Model.PizzaDictionary[x - 1][1]
+
+</p>
+    }
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

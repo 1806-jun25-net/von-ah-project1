@@ -55,10 +55,16 @@ insert Users
 Values ('Papa', 'John', '123 Grove St.', 1)
 
 SELECT * from Orders
+SELECT * from OrderPizza
 SELECT * from Users
 SELECT * from Locations
-SELECT * from OrderPizza
+
 SELECT * from Pizzas
+
+Update Locations
+Set ToppingInventoryCheese = 30
+Where LocationID = 1
+
 
 --initalize some values
 
@@ -90,6 +96,7 @@ Values (2,4)
 Update Users
 Set ManagerFlag = 1
 WHERE UserID = 6
+
 
 DELETE FROM OrderPizza
 Where ID = 15

@@ -70,6 +70,7 @@ namespace Project1.WebApp.Controllers
                 {
                     Repo.AddUser(libUser);
                     Repo.Save();
+                    checkUser = Repo.FindUserId(libUser.FirstName, libUser.LastName);
                     TempData["id"] = checkUser;
                     TempData["FirstName"] = libUser.FirstName;
                     return RedirectToAction("Index", "Home");
