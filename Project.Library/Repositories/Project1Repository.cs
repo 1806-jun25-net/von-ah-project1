@@ -135,6 +135,19 @@ namespace Project1.Library.Repositories
             }
             return null;
         }
+        public bool FindManagerFlagById(int id)
+        {
+            var users = _db.Users;
+            foreach (var user in users)
+            {
+                if (user.UserId.Equals(id))
+                {
+                    return (bool)user.ManagerFlag;
+                }
+            }
+            return false;
+        }
+
 
         public int FindPizzaIdByToppings(List<bool> Toppings)
         {

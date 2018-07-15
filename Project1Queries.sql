@@ -95,7 +95,7 @@ Values (2,4)
 
 Update Users
 Set ManagerFlag = 1
-WHERE UserID = 6
+WHERE UserID = 35
 
 
 DELETE FROM OrderPizza

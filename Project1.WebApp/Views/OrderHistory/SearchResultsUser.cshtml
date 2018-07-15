@@ -4,10 +4,10 @@
     ViewData["Title"] = "SearchResultsUser";
 }
 
-<h2>SearchResultsUser</h2>
+
 
 <div>
-    <h4>OrderWeb</h4>
+    <h2>Search Results</h2>
     <hr />
     @foreach (var item in Model)
     {
@@ -41,7 +41,7 @@
                 @Html.DisplayNameFor(modelItem => item.TotalPrice)
             </dt>
             <dd>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
+                $@Html.DisplayFor(modelItem => item.TotalPrice)
             </dd>
             
         </dl>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,20 +9,25 @@ namespace Project1.WebApp.Models
 {
     public class OrderWeb
     {
+        [Display(Name="Order Id")]
         public int OrderId { get; set; }
         public int LocationId { get; set; }
         public int UserId { get; set; }
+        [Display(Name = "Time of Order")]
         public DateTime OrderTime { get; set; }
+        [Display(Name = "Total Price")]
         public decimal TotalPrice { get; set; }
         public List<int> PizzaIDs { get; set; } = new List<int>();
         //public List<string> PizzasString { get; set; }
         public int NumOfToppings { get; set; } = 2;
         public Dictionary<int, List<bool>> PizzaDictionary { get; set; } = new Dictionary<int, List<bool>>();
+        [Display(Name = "Number of pizzas to add")]
         public string PizzaCountString { get; set; }
         public int PizzaCountInt { get; set; }
         public int PizzaCountDetails { get; set; }
         public string Address { get; set; }
         public bool[] CheckBoxValues { get; set; }
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         public List<SelectListItem> AddressEnumerable = new List<SelectListItem>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Project1.WebApp</title>
+    <title>@ViewData["Title"] - Pizza Store</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -17,7 +17,16 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body>
+@{ string style = "";}
+@if (TempData.Peek("MID") == null)
+{
+}
+else if ((bool)TempData.Peek("MID") == true)
+{
+    style = "background: #2F2F4F; color: #FFFFFF";
+
+}
+<body style=@style>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -27,7 +36,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Project1.WebApp</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Pizza Store</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -41,11 +50,21 @@
                             }
                             else
                             {
-                                @TempData.Peek("FirstName")
+                                @:Welcome, @TempData.Peek("FirstName")
                             }
-                            </a></li>
-                            <li><a asp-area="" asp-controller="OrderHistory" asp-action="Index">OrderHistory</a></li>
-                        </ul>
+                        </a>
+                    </li>
+                    <li><a asp-area="" asp-controller="OrderHistory" asp-action="Index">Order History</a></li>
+                    @if (TempData.Peek("MID") == null)
+                    {
+                    }
+                    else if ((bool)TempData.Peek("MID") == true)
+                    {
+                        <li><a asp-area="" asp-controller="Pizzas" asp-action="Index">Update Pizzas</a></li>
+                        <li><a asp-area="" asp-controller="Location" asp-action="Index">Update Locations</a></li>
+                    }
+
+                </ul>
             </div>
         </div>
     </nav>

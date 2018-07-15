@@ -8,6 +8,7 @@ namespace Project1.WebApp.Models
 {
     public class LocationWeb
     {
+
         public int Id { get; set; }
         public string Address { get; set; }
         public Dictionary<string, int> Inventory { get; set; }

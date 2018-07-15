@@ -73,6 +73,8 @@ namespace Project1.WebApp.Controllers
                     checkUser = Repo.FindUserId(libUser.FirstName, libUser.LastName);
                     TempData["id"] = checkUser;
                     TempData["FirstName"] = libUser.FirstName;
+                    TempData["MID"] = false;
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -100,6 +102,7 @@ namespace Project1.WebApp.Controllers
                 {
                     TempData["id"] = checkUser;
                     TempData["FirstName"] = libUser.FirstName;
+                    TempData["MID"] = Repo.FindManagerFlagById(checkUser);
                     return RedirectToAction("Index", "Home");
                 }
                 else
