@@ -83,7 +83,7 @@ namespace Project1.Library.Models
         }
 
 
-        public static Order FindLastOrderFromUserFromLocation(List<Order> orders, string location)
+        public static Order FindLastOrderFromUserFromLocation(List<Order> orders)
         {
             orders.Sort((x, y) => y.OrderTime.CompareTo(x.OrderTime));
             return orders.FirstOrDefault(); //look at this when list is empty

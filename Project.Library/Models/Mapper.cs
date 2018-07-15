@@ -35,8 +35,8 @@ namespace Project1.Library.Models
         {
             LocationID = location.LocationId,
             Address = location.Address,
-         // /  CheeseInventory = location.ToppingInventoryCheese,
-          //  PepperoniInventory = location.ToppingInventoryPepperoni
+            CheeseInventory = location.ToppingInventoryCheese,
+            PepperoniInventory = location.ToppingInventoryPepperoni
 
         };
         //maps a library location to a dbcontext location
@@ -44,8 +44,8 @@ namespace Project1.Library.Models
         {
             LocationId = location.LocationID,
             Address = location.Address,
-        //    ToppingInventoryPepperoni = location.PepperoniInventory,
-         //   ToppingInventoryCheese = location.CheeseInventory
+            ToppingInventoryPepperoni = location.PepperoniInventory,
+            ToppingInventoryCheese = location.CheeseInventory
         };
         //maps a dbcontext Pizza to a library pizza
         public static Pizza Map(Context.Models.Pizzas pizza) => new Pizza

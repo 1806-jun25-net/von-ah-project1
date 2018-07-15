@@ -25,7 +25,15 @@ namespace Project1.WebApp.Controllers
         // GET: Order
         public ActionResult Index()
         {
+            /*if (TempData.Peek("id").Equals(null)) //redirect to login
+            {
+                RedirectToAction("Index", "User");
+            }*/
             OrderWeb order = new OrderWeb();
+            //suggested order logic
+    
+
+
             return View(order);
         }
         public ActionResult PlaceOrder(string numP, string loc)
@@ -56,19 +64,49 @@ namespace Project1.WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-                
+
         public ActionResult Index(OrderWeb order)
         {
-         //   var CurrentOrder = new OrderWeb { PizzaCount = order.PizzaCount, Address = order.Address };
+            //   var CurrentOrder = new OrderWeb { PizzaCount = order.PizzaCount, Address = order.Address };
             //  Session["Order"] = CurrentOrder;
-          //  HttpContext.Session.Set("order", CurrentOrder);
+            //  HttpContext.Session.Set("order", CurrentOrder);
 
 
 
-            //if user exists and no datetime conflicts
-            return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address }); //redirect to next part of the order with the data you have. PizzaCount and location (which can make a location id)
+            if (TempData.Peek("id") == null) //redirect to login
+            {
+                ModelState.AddModelError("", "Please login before placing an order");
+                return View(order);
+            }
+            else
+            {
+                //datetime logic
+                var currentTime = DateTime.Now;
+                TimeSpan span;
+                var OrderList = Repo.GetOrders();
+                var userId = (int)TempData.Peek("id");
+                string FirstName = Repo.FindFirstNameById(userId);
+                string LastName = Repo.FindLastNameById(userId);
+                var userHistory = Library.Models.Order.CreateUserOrderHistory(OrderList, FirstName, LastName);
+                var userHistoryAtLocation = Library.Models.Order.CreateLocationOrderHistory(userHistory, order.Address);
+                if (userHistoryAtLocation.Count > 0)
+                {
+                    var LastOrder = Library.Models.Order.FindLastOrderFromUserFromLocation(userHistoryAtLocation);
+                    span = currentTime.Subtract(LastOrder.OrderTime);
+                    if (span.TotalHours < 2)
+                    {
+                        ModelState.AddModelError("", "Sorry you cannot place an order from the same location within two hours");
+                        return View(order);
+                        //pass last order id and print suggested order on place order
+                    }
+                }
+                return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address }); //redirect to next part of the order with the data you have. PizzaCount and location (which can make a location id)
+
+
+            }
+
+            
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PlaceOrder(string[] ToppingListForm, OrderWeb order)
@@ -109,21 +147,62 @@ namespace Project1.WebApp.Controllers
                 }
                 order.PizzaDictionary[x] = OrderToppingList;
             }
-
+            //inventory logic
             order.LocationId = Repo.GetLocationIdByName(order.Address);
-            order.OrderTime = DateTime.Now;
-            order.UserId = (int)TempData.Peek("id"); //fix add functionality to check if user is logged in
-            for (int x = 0; x <order.PizzaCountInt; x++)
+            //get inventory from db by location id (for pizza and cheese)
+            var PepperoniInventory = Repo.GetLocationPepperoniInventoryById(order.LocationId);
+            var CheeseInventory = Repo.GetLocationCheeseInventoryById(order.LocationId);
+            for (int x = 0; x < order.PizzaCountInt; x++)
             {
                 order.PizzaIDs.Add(Repo.FindPizzaIdByToppings(order.PizzaDictionary[x]));
             }
+            //subtract for each topping on each pizza
+            for (int x = 0; x < order.PizzaCountInt; x++) //pepperoni first
+            {
+                if (order.PizzaDictionary[x][0])
+                {
+                    PepperoniInventory -= 1;
+                }
+                if (order.PizzaDictionary[x][1])
+                {
+                    CheeseInventory -= 1;
+                }
+            }
+            //check if less than 0
+            if ((PepperoniInventory < 0) || (CheeseInventory < 0))
+            {
+                ModelState.AddModelError("", "Sorry we do not have enough inventory at this location to create your order");
+                return View(order);
+            }
+            //if less than 0 add it back and return view
+            //ModelState.AddModelError("", "Sorry we do not have enough inventory at this location to create your order");
+            //return View(order);
+
+
+            order.OrderTime = DateTime.Now;
+            order.UserId = (int)TempData.Peek("id"); 
+            
             decimal runningTotal = 0.00m;
             foreach(var id in order.PizzaIDs)
             {
                 runningTotal += Repo.FindPriceByPizzaID(id);
             }
             order.TotalPrice = runningTotal;
+            if ((Decimal.Compare(runningTotal, 500.00m)) > 0) //compare to $500
+            {
+                ModelState.AddModelError("", "Sorry we cannot accept your order, it exceeds $500");
+                return View(order);
+            }
             var libOrder = MapperWeb.Map(order);
+            var location = new Library.Models.Location
+            {
+                LocationID = order.LocationId,
+                Address = Repo.GetLocationNameById(order.LocationId),
+                PepperoniInventory = PepperoniInventory,
+                CheeseInventory = CheeseInventory
+            };
+            Repo.UpdateLocationInventory(location);
+            Repo.Save();
             Repo.AddOrder(libOrder);
             Repo.Save();
             order.OrderId = Repo.GetOrderIdByDateTime(order.OrderTime);

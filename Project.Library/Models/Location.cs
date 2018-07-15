@@ -10,8 +10,8 @@ namespace Project1.Library.Models
         public string Address { get; set; }
         public Dictionary<string, int> Inventory {get; set;}
      //   public List<Order> OrderHistory { get; set; }
-  //      public int PepperoniInventory { get; set; }
-    //    public int CheeseInventory { get; set; }
+        public int PepperoniInventory { get; set; }
+        public int CheeseInventory { get; set; }
   /*      public Location(string address)
         {
             this.Address = address;

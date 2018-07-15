@@ -213,6 +213,34 @@ namespace Project1.Library.Repositories
             return "";
         }
 
+        public int GetLocationPepperoniInventoryById(int id)
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                if (location.LocationId.Equals(id))
+                {
+                    return location.ToppingInventoryPepperoni;
+                }
+            }
+            return 0;
+        }   
+
+        public int GetLocationCheeseInventoryById(int id)
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                if (location.LocationId.Equals(id))
+                {
+                    return location.ToppingInventoryCheese;
+                }
+            }
+            return 0;
+        }
+
+        
+
         public List<Models.User> SearchUserByFirstName(string First)
         {
             var users = _db.Users;
