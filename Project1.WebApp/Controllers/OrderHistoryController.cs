@@ -39,11 +39,11 @@ namespace Project1.WebApp.Controllers
             return View(location);
         }
 
-        public ActionResult SearchResultsUser(int id, string searchOption) //functional
+        public ActionResult SearchResultsUser(int searchID, string searchOption) //functional
         {
-            try
-            {
-                var UserHistory = (Repo.GetOrdersByUserId(id));
+          //  try
+          //  {
+                var UserHistory = (Repo.GetOrdersByUserId(searchID));
                 if (searchOption == "1")
                 {
                     UserHistory.Sort((x, y) => y.OrderTotalValue.CompareTo(x.OrderTotalValue));
@@ -61,19 +61,28 @@ namespace Project1.WebApp.Controllers
                     UserHistory.Sort((x, y) => x.OrderTime.CompareTo(y.OrderTime));
                 }
                 var WebUserHistory = MapperWeb.Map(UserHistory);
+                string FirstName = "";
+                string LastName = "";
+                foreach (var order in WebUserHistory)
+                {
+                    order.Address = Repo.GetLocationNameById(order.LocationId);
+                    FirstName = Repo.FindFirstNameById(order.UserId);
+                    LastName = Repo.FindLastNameById(order.UserId);
+                    order.UserName = FirstName + " " + LastName;
+                }
                 return View(WebUserHistory);
-            }
-            catch
-            {
-                return View();
-            }
+           // }
+           // catch
+           // {
+               // return View();
+            //}
         }
 
-        public ActionResult SearchResultsLocation(int id, string searchOption)
+        public ActionResult SearchResultsLocation(int searchID, string searchOption)
         {
             try
             {
-                var LocationHistory = (Repo.GetOrdersByLocationId(id));
+                var LocationHistory = (Repo.GetOrdersByLocationId(searchID));
                 if (searchOption == "1") //most expensive
                 {
                     LocationHistory.Sort((x, y) => y.OrderTotalValue.CompareTo(x.OrderTotalValue));
@@ -91,6 +100,19 @@ namespace Project1.WebApp.Controllers
                     LocationHistory.Sort((x, y) => x.OrderTime.CompareTo(y.OrderTime));
                 }
                 var WebLocationHistory = MapperWeb.Map(LocationHistory);
+                foreach (var order in WebLocationHistory)
+                {
+                    order.Address = Repo.GetLocationNameById(order.LocationId);
+                }
+                string FirstName = "";
+                string LastName = "";
+                foreach (var order in WebLocationHistory)
+                {
+                    order.Address = Repo.GetLocationNameById(order.LocationId);
+                    FirstName = Repo.FindFirstNameById(order.UserId);
+                    LastName = Repo.FindLastNameById(order.UserId);
+                    order.UserName = FirstName + " " + LastName;
+                }
                 return View(WebLocationHistory);
             }
             catch
@@ -109,7 +131,7 @@ namespace Project1.WebApp.Controllers
                 var checkUser = Repo.FindUserId(libUser.FirstName, libUser.LastName);
                 if (checkUser > 0)
                 {
-                    return RedirectToAction("SearchResultsUser", "OrderHistory", new { id = checkUser, searchOption = user.SearchOption}); //add search option
+                    return RedirectToAction("SearchResultsUser", "OrderHistory", new { searchID = checkUser, searchOption = user.SearchOption}); //add search option
                 }
                 else
                 {
@@ -135,7 +157,7 @@ namespace Project1.WebApp.Controllers
                 var checkLocation = Repo.GetLocationIdByName(location.Address);
                 if (checkLocation > 0)
                 {
-                    return RedirectToAction("SearchResultsLocation", "OrderHistory", new { id = checkLocation, searchOption = location.SearchOption }); //add search option
+                    return RedirectToAction("SearchResultsLocation", "OrderHistory", new { searchID = checkLocation, searchOption = location.SearchOption }); //add search option
                 }
                 else
                 {

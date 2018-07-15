@@ -82,8 +82,8 @@ namespace Project1.Library.Models
         {
         //    OrderId = order.OrderID,
            // Location = Map(order.OrderLocation),
-            LocationId = order.OrderLocation.LocationID,
-            UserId = order.Purchaser.UserID,
+            LocationId = order.LocationId,
+            UserId = order.UserId,
          //   User = Map(order.Purchaser),
             //  OrderPizzas = Map(order.OrderPizza),
             OrderTime = order.OrderTime,

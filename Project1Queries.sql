@@ -95,7 +95,7 @@ DELETE FROM OrderPizza
 Where ID = 15
 
 DELETE FROM Orders
-WHERE OrderID = 10
+WHERE OrderID = 15
 
 DELETE FROM Users
 WHERE UserID = 11

@@ -4,90 +4,137 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project1.Library.Repositories;
+using Project1.WebApp.Models;
 
 namespace Project1.WebApp.Controllers
 {
     public class OrderController : Controller
     {
+        public Project1Repository Repo { get; }
+
+        public MapperWeb WebMap { get; }
+
+        
+
+        public OrderController(Project1Repository repo, MapperWeb mapper)
+        {
+            Repo = repo;
+            WebMap = mapper;
+        }
         // GET: Order
         public ActionResult Index()
         {
-            return View();
+            OrderWeb order = new OrderWeb();
+            return View(order);
         }
-
-        // GET: Order/Details/5
-        public ActionResult Details(int id)
+        public ActionResult PlaceOrder(string numP, string loc)
         {
-            return View();
+            TempData["numP"] = numP;
+            TempData["loc"] = loc;
+            OrderWeb order = new OrderWeb
+            {
+                PizzaCountInt = Convert.ToInt32(numP)
+            };
+
+
+            return View(order);
         }
 
-        // GET: Order/Create
-        public ActionResult Create()
+        public ActionResult OrderDetails(int orderId)
         {
-            return View();
+            //get order details by id
+            var LibOrder = Repo.GetOrderById(orderId);
+            
+            var WebOrder = MapperWeb.Map(LibOrder);
+            string FirstName = Repo.FindFirstNameById(WebOrder.UserId);
+            string LastName = Repo.FindLastNameById(WebOrder.UserId);
+            WebOrder.Address = Repo.GetLocationNameById(WebOrder.LocationId);
+            WebOrder.UserName = FirstName + " " + LastName;
+            return View(WebOrder);
         }
 
-        // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+                
+        public ActionResult Index(OrderWeb order)
         {
-            try
-            {
-                // TODO: Add insert logic here
+         //   var CurrentOrder = new OrderWeb { PizzaCount = order.PizzaCount, Address = order.Address };
+            //  Session["Order"] = CurrentOrder;
+          //  HttpContext.Session.Set("order", CurrentOrder);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+
+            //if user exists and no datetime conflicts
+            return RedirectToAction("PlaceOrder", "Order", new { numP = order.PizzaCountString, loc = order.Address }); //redirect to next part of the order with the data you have. PizzaCount and location (which can make a location id)
         }
 
-        // GET: Order/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Order/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult PlaceOrder(string[] ToppingListForm, OrderWeb order)
         {
-            try
+            string numP = (string)TempData.Peek("numP");
+            string loc = (string)TempData.Peek("loc");
+            order.PizzaCountString = numP; //this is a string need to convert to int
+            order.Address = loc;
+            order.PizzaCountInt = Convert.ToInt32(numP);         
+            List<bool> ToppingList = new List<bool>();
+            for (int i = 0; i < order.NumOfToppings; i++)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                ToppingList.Add(false);
             }
-            catch
+            for (int i = 0; i < order.PizzaCountInt; i++)
             {
-                return View();
+                order.PizzaDictionary.Add(i, ToppingList);
             }
-        }
 
-        // GET: Order/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: Order/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+
+            int boolIndex = 0;
+            for (int x = 0; x < order.PizzaCountInt; x++)
             {
-                // TODO: Add delete logic here
+                List<bool> OrderToppingList = new List<bool>();
+                for (int i = 0; i < order.NumOfToppings; i++)
+                {
+                      if (ToppingListForm[boolIndex] == "true")
+                      {
+                          OrderToppingList.Add(true);
+                          boolIndex++;
+                      }
+                      else
+                      {
+                          OrderToppingList.Add(false);
+                      }
+                    boolIndex++;
+                }
+                order.PizzaDictionary[x] = OrderToppingList;
+            }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            order.LocationId = Repo.GetLocationIdByName(order.Address);
+            order.OrderTime = DateTime.Now;
+            order.UserId = (int)TempData.Peek("id"); //fix add functionality to check if user is logged in
+            for (int x = 0; x <order.PizzaCountInt; x++)
             {
-                return View();
+                order.PizzaIDs.Add(Repo.FindPizzaIdByToppings(order.PizzaDictionary[x]));
             }
+            decimal runningTotal = 0.00m;
+            foreach(var id in order.PizzaIDs)
+            {
+                runningTotal += Repo.FindPriceByPizzaID(id);
+            }
+            order.TotalPrice = runningTotal;
+            var libOrder = MapperWeb.Map(order);
+            Repo.AddOrder(libOrder);
+            Repo.Save();
+            order.OrderId = Repo.GetOrderIdByDateTime(order.OrderTime);
+            foreach (var id in order.PizzaIDs)
+            {
+                Repo.AddOrderPizzas(order.OrderId, id);
+            }
+            Repo.Save();
+
+
+            return RedirectToAction("OrderDetails", "Order", new { orderId = order.OrderId });
         }
     }
 }

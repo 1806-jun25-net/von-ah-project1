@@ -56,6 +56,33 @@ namespace Project1.Library.Repositories
             return LocationHistory;
         }
 
+        public Models.Order GetOrderById(int id)
+        {
+            var orders = _db.Orders.Include(x => x.Location).Include(y => y.User).AsNoTracking();
+            foreach (var order in orders)
+            {
+                if(order.OrderId == id)
+                {
+                    return Mapper.Map(order);
+                }
+            }
+            return null;
+        }
+
+        public int GetOrderIdByDateTime(DateTime time)
+        {
+            var orders = _db.Orders;
+            foreach(var order in orders)
+            {
+                if (order.OrderTime.Equals(time))
+                {
+                    return order.OrderId;
+                }
+            }
+            return 0;
+        } 
+      
+
         public Context.Models.Locations FindLocationById(int id)
         {
             var locations = _db.Locations;
@@ -81,6 +108,58 @@ namespace Project1.Library.Repositories
                 }
             }
             return null;
+        }
+
+
+        public string FindFirstNameById(int id)
+        {
+            var users = _db.Users;
+            foreach (var user in users)
+            {
+                if (user.UserId.Equals(id))
+                {
+                    return user.FirstName;
+                }
+            }
+            return null;
+        }
+        public string FindLastNameById(int id)
+        {
+            var users = _db.Users;
+            foreach (var user in users)
+            {
+                if (user.UserId.Equals(id))
+                {
+                    return user.LastName;
+                }
+            }
+            return null;
+        }
+
+        public int FindPizzaIdByToppings(List<bool> Toppings)
+        {
+            var pizzas = _db.Pizzas;
+            foreach (var pizza in pizzas)
+            {
+                if ((pizza.ToppingPepperoni == Toppings[0]) && (pizza.ToppingCheese == Toppings[1]))
+                {
+                    return pizza.PizzaId;
+                }
+            }
+            return 0;
+        }
+
+        public decimal FindPriceByPizzaID(int id)
+        {
+            var pizzas = _db.Pizzas;
+            foreach(var pizza in pizzas)
+            {
+                if(pizza.PizzaId == id)
+                {
+                    return pizza.Price;
+                }
+            }
+            return 0.00m;
         }
 
         public Models.User GetUserByName(string First, string Last)
@@ -120,6 +199,18 @@ namespace Project1.Library.Repositories
                 }
             }
             return 0;
+        }
+        public string GetLocationNameById(int id)
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                if (location.LocationId.Equals(id))
+                {
+                    return location.Address;
+                }
+            }
+            return "";
         }
 
         public List<Models.User> SearchUserByFirstName(string First)

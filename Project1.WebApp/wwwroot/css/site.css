@@ -27,6 +27,14 @@ body {
 #qrCode {
     margin: 15px;
 }
+.horizontal {
+    float: left;
+    border: 1px solid green
+}
+.horizontal * {
+        display: inline-block;
+        margin-left: 10px;
+    }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

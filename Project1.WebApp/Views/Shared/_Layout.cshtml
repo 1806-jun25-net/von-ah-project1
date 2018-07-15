@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Project1.Library.Repositories;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -32,9 +33,19 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Order" asp-action="Index">Place An Order</a></li>
-                    <li><a asp-area="" asp-controller="User" asp-action="Index">Login</a></li>
-                    <li><a asp-area="" asp-controller="OrderHistory" asp-action="Index">OrderHistory</a></li>
-                </ul>
+                    <li>
+                        <a asp-area="" asp-controller="User" asp-action="Index">
+                            @if (TempData.Peek("id") == null)
+                            {
+                                @:Login
+                            }
+                            else
+                            {
+                                @TempData.Peek("FirstName")
+                            }
+                            </a></li>
+                            <li><a asp-area="" asp-controller="OrderHistory" asp-action="Index">OrderHistory</a></li>
+                        </ul>
             </div>
         </div>
     </nav>

@@ -38,7 +38,9 @@ namespace Project1.WebApp
             services.AddDbContext<Project1Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Project1")));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddSessionStateTempDataProvider();
+            services.AddDistributedMemoryCache();
+            services.AddSession(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +57,7 @@ namespace Project1.WebApp
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -24,12 +24,12 @@ namespace Project1.WebApp.Controllers
             Mapper = mapper;
         }
 
-   
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-           // UserWeb user = new UserWeb();
-            
+            // UserWeb user = new UserWeb();
+
             return View();
         }
         public IActionResult ExistingUser()
@@ -44,6 +44,20 @@ namespace Project1.WebApp.Controllers
 
             return View(user);
         }
+
+        public IActionResult Search()
+        {
+            UserWeb user = new UserWeb();
+            return View(user);
+        }
+        public IActionResult SearchResults(string searchID)
+        {
+            var searchUser = MapperWeb.Map(Repo.SearchUserByFirstName(searchID));
+            return View(searchUser);
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult NewUser(UserWeb user)
@@ -56,13 +70,15 @@ namespace Project1.WebApp.Controllers
                 {
                     Repo.AddUser(libUser);
                     Repo.Save();
+                    TempData["id"] = checkUser;
+                    TempData["FirstName"] = libUser.FirstName;
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "User already exists.");
                     return View(user);
-                    
+
                 }
                 // TODO: Add insert logic 
             }
@@ -81,6 +97,8 @@ namespace Project1.WebApp.Controllers
                 var checkUser = Repo.FindUserId(libUser.FirstName, libUser.LastName);
                 if (checkUser > 0)
                 {
+                    TempData["id"] = checkUser;
+                    TempData["FirstName"] = libUser.FirstName;
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -97,6 +115,39 @@ namespace Project1.WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(UserWeb user)
+
+        {
+            try
+            {
+              //  var libUser = MapperWeb.Map(user);
+              //  var checkUser = Repo.FindUserId(libUser.FirstName, libUser.LastName);
+              //  if (checkUser > 0)
+              //  {
+                    return RedirectToAction("SearchResults", "User", new { searchID = user.FirstName}); //add search option
+             //   }
+              //  else
+             //   {
+              //      ModelState.AddModelError(string.Empty, "User doesn't exist. Please retype your search");
+             //       return View(user);
+
+                //}
+                // TODO: Add insert logic 
+            }
+            catch
+            {
+                return View();
+            }
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchResults(List<UserWeb> users, string searchID)
+        {
+            return View();
+        }
 
     }
 }

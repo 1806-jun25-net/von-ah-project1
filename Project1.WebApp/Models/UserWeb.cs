@@ -23,6 +23,8 @@ namespace Project1.WebApp.Models
         [Display(Name = "Search order history by")]
         public int SearchOption { get; set;}
 
+        public bool Searched { get; set; } = false;
+
         public List<SelectListItem> OptionEnumerable = new List<SelectListItem>
         {
             new SelectListItem {Value = "1", Text = "Most Expensive"},

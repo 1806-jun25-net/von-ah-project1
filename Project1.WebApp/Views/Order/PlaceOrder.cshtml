@@ -1,0 +1,37 @@
+﻿@model Project1.WebApp.Models.OrderWeb
+
+@{
+    ViewData["Title"] = "PlaceOrder";
+}
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<h2>PlaceOrder</h2>
+
+<h4>OrderWeb</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PlaceOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @for (int i = 1; i < Model.PizzaCountInt+1; i++) 
+            {
+            <div class="form-group">
+                <h3>Pizza #:@i</h3>
+                    <label><input id="checked" type="checkbox" name="ToppingListForm" value="true" />
+                           <input id="unchecked" type="hidden" value="false" name="ToppingListForm"/>Pepperoni</label>
+                    <label><input id="checked" type="checkbox" name="ToppingListForm" value="true" />
+                           <input id="unchecked" type="hidden" value="false" name="ToppingListForm"/>Cheese</label>
+            </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
