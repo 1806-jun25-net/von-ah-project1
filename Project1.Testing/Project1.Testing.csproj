@@ -13,4 +13,10 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Project.Library\Project1.Library.csproj" />
+    <ProjectReference Include="..\Project1.Context\Project1.Context.csproj" />
+    <ProjectReference Include="..\Project1.WebApp\Project1.WebApp.csproj" />
+  </ItemGroup>
+
 </Project>

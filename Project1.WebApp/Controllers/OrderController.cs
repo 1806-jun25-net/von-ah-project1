@@ -40,12 +40,16 @@ namespace Project1.WebApp.Controllers
         {
             TempData["numP"] = numP;
             TempData["loc"] = loc;
+            TempData["lastId"] = lastId;
             OrderWeb order = new OrderWeb
             {
                 PizzaCountInt = Convert.ToInt32(numP)
             };
+         //   if (lastId != null)
+          //  {
+                order.OrderId = lastId;
+           // }
 
-            order.OrderId = lastId;
             //logic to display suggested order
             //need parameter last order id
             //if order history doesnt exist then lastId will be 0

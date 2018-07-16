@@ -26,3 +26,12 @@ C:\Revature\von-ah-project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Te
 C:\Revature\von-ah-project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.AssemblyInfo.cs
 C:\Revature\von-ah-project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.dll
 C:\Revature\von-ah-project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.pdb
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.WebApp.Views.dll
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.WebApp.Views.pdb
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Context.dll
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Library.dll
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.WebApp.dll
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Library.pdb
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.Context.pdb
+C:\Revature\von-ah-project1\Project1.Testing\bin\Debug\netcoreapp2.1\Project1.WebApp.pdb
+C:\Revature\von-ah-project1\Project1.Testing\obj\Debug\netcoreapp2.1\Project1.Testing.csproj.CopyComplete
