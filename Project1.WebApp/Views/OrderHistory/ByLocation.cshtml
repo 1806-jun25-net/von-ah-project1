@@ -7,7 +7,7 @@
 
 <h2>Search order history by location</h2>
 <hr />
-<div class="row">
+<div class="row">   
     <div class="col-md-4">
         <form asp-action="ByLocation">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -16,7 +16,7 @@
                 @Html.DropDownListFor(model => model.Address, new SelectList(Model.AddressEnumerable, "Value", "Text"), new { required = (string)null })
             </div>
             <div class="form-control">
-                @Html.LabelFor(model => model.SearchOption)
+                Search By:
                 @Html.DropDownListFor(model => model.SearchOption, new SelectList(Model.OptionEnumerable, "Value", "Text"), new { required = (string)null })
             </div>
             <div class="form-group">

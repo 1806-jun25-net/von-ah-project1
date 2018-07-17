@@ -22,7 +22,7 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-control">
-                @Html.LabelFor(model => model.SearchOption)
+                Search By:
                 @Html.DropDownListFor(model => model.SearchOption, new SelectList(Model.OptionEnumerable, "Value", "Text"), new { required = (string)null })
             </div>
             <div class="form-group">
