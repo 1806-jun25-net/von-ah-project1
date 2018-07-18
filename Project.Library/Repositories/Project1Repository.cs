@@ -272,7 +272,6 @@ namespace Project1.Library.Repositories
         public void AddOrder(Models.Order order)
         {
             _db.Add(Mapper.Map(order));
-           // Console.WriteLine("{0}", order.OrderID);
         }
         //creates entry in order pizza table
         public void AddOrderPizzas(int orderID, int pizzaId)
@@ -313,20 +312,9 @@ namespace Project1.Library.Repositories
         public void UpdateLocationInventory(Models.Location location)
         {
             _db.Entry(_db.Locations.Find(location.LocationID)).CurrentValues.SetValues(Mapper.Map(location));
-         /*   _db.Locations.Attach(Mapper.Map(location));
-            _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryCheese).IsModified = true;
-            _db.Entry(_db.Locations.Find(location.LocationID)).Property(x => x.ToppingInventoryPepperoni).IsModified = true;*/
+ 
         }
        
-        /* public void Test()
-         {
-             foreach (var orderPizza in _db.OrderPizza)
-             {
-                 //     Console.WriteLine("{0} {1}", orderPizza.OrderId, orderPizza.PizzaId);
-                 var pizza = _db.Pizzas.Find(4);
-                 Console.WriteLine("{0},{1},{2}", pizza.PizzaId, pizza.Price, pizza.ToppingCheese);
-             }
-         }*/
     }
 }
     

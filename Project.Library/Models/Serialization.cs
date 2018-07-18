@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Project1.Library.Models
 {
-    public class Serialization
+    public static class Serialization
     {
         public static void SerializeToFile(string fileName, List<Order> OrderHistory)
         {
@@ -32,10 +32,9 @@ namespace Project1.Library.Models
         {
             var serializer = new XmlSerializer(typeof(List<Order>));
             // we CAN do try/finally like this, but the using statement is easier
-            FileStream fileStream = null;
+            FileStream fileStream = new FileStream(fileName, FileMode.Open);
             try
-            {
-                fileStream = new FileStream(fileName, FileMode.Open);
+            { 
 
                 var result = (List<Order>)serializer.Deserialize(fileStream);
                 return result;

@@ -9,7 +9,7 @@ namespace Project1.Library.Models
 {
     public class Order
     {
-        [XmlElement]    
+        [XmlElement]
         public int OrderID { get; set; }
         public Location OrderLocation { get; set; }
         public User Purchaser { get; set; }
@@ -28,7 +28,7 @@ namespace Project1.Library.Models
             }
             else { return false; }
         }
-        
+
         public bool checkLocation(string address)
         {
             if (this.OrderLocation.Address.Equals(address))
@@ -56,7 +56,7 @@ namespace Project1.Library.Models
 
 
             var userHistory = new List<Order>(); // creates new list of orders to represent the user history
-                                                 //userHistory = null;
+
             foreach (var order in orders)
             {
                 var hasUserOrder = order.checkUserExists(FirstName, LastName); //goes through each order looking for user name
@@ -90,21 +90,5 @@ namespace Project1.Library.Models
         }
     }
 
-    /*   public bool checkUserOrdered(User userName)
-       {
-
-       }*/
 }
-  /*  public int checkNumOfOrderedPizzasIsInt(string pizzas)
-    {
-        try
-        {
-            int numOfPizzasInt = Convert.ToInt32(pizzas);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Please input an interger 1-12");
-        }
-    }*/
-
 

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Project1.Library.Models
 {
-    public class Mapper
+    public static class Mapper
     {
         //maps a dbcontext User to our library User
         public static User Map(Context.Models.Users user) => new User
