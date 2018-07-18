@@ -21,9 +21,7 @@ namespace Project1.Context.Models
         public virtual DbSet<Pizzas> Pizzas { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
